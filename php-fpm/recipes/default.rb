@@ -47,6 +47,7 @@ template '/etc/php5/fpm/conf.d/05-opcache.ini' do
   mode 0644
   owner 'root'
   group 'root'
+  manage_symlink_source true
 end
 
 template '/etc/php5/fpm/pool.d/www.conf.erb' do
@@ -58,6 +59,6 @@ end
 
 include_recipe "php-fpm::service"
 
-service "php-fpm" do
+service 'php5-fpm' do
   action [ :restart ]
 end
