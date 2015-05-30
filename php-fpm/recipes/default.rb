@@ -59,5 +59,5 @@ end
 include_recipe "php-fpm::service"
 
 service "php-fpm" do
-  action [ :enable, :restart ]
+  action [ :restart ]
 end
