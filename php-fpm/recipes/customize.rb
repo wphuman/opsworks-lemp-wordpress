@@ -1,9 +1,4 @@
-# Include nginx
-include_recipe "nginx"
-
-php_fpm_service_name = "php-fpm"
 packages = [
-  'php5-fpm',
   'php5-gd',
   'libssh2-php',
   'php5-memcached',
@@ -50,15 +45,12 @@ template '/etc/php5/fpm/conf.d/05-opcache.ini' do
   manage_symlink_source true
 end
 
-template '/etc/php5/fpm/pool.d/www.conf.erb' do
-  source 'www.conf.erb'
-  mode 00644
-  owner 'root'
-  group 'root'
-end
-
-include_recipe "php-fpm::service"
-
-service 'php5-fpm' do
-  action  [:enable, :start]
+php_fpm_pool 'www' do
+  process_manager 'dynamic'
+  max_children 40
+  start_servers 10
+  min_spare_servers 6
+  max_spare_servers 12
+  max_requests 500
+  php_options 'php_admin_flag[log_errors]' => 'on', 'php_admin_value[memory_limit]' => '64M'
 end
