@@ -17,7 +17,7 @@ node[:deploy].each do |application, deploy|
     action :reload
   end
 
-  service 'php-fpm' do
+  service 'php5-fpm' do
     supports :status => true, :restart => true, :reload => true
     action :reload
   end
