@@ -29,6 +29,7 @@ template '/etc/php5/fpm/conf.d/05-opcache.ini' do
 end
 
 php_fpm_pool 'www' do
+  listen '/var/run/php5-fpm.sock'
   process_manager 'dynamic'
   max_children 40
   start_servers 10
