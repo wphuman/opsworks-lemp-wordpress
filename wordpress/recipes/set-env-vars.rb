@@ -3,6 +3,11 @@
 
 node[:deploy].each do |application, deploy|
 
+  if deploy[:application_type] != 'php'
+    Chef::Log.debug("Skipping wordpress::set-env-vars application #{application} as it is not an PHP app")
+    next
+  end
+
   template "#{deploy[:deploy_to]}/current/#{deploy[:document_root]}/env-config.php" do
     source "env-config.php.erb"
     mode 0660

@@ -1,15 +1,14 @@
 #
 # Cookbook Name:: deploy
-# Recipe:: php-undeploy
+# Recipe:: php-fpm-undeploy
+#
 
 include_recipe 'deploy'
 include_recipe 'nginx::service'
-include_recipe 'php-fpm::service'
-Chef::Log.debug("Called deploy::php-undeploy")
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'php'
-    Chef::Log.debug("Skipping undeploy::web application #{application} as it is not a PHP app")
+    Chef::Log.debug("Skipping deploy::php-fpm-undeploy application #{application} as it is not an PHP app")
     next
   end
 
@@ -18,7 +17,14 @@ node[:deploy].each do |application, deploy|
     only_if do
       ::File.exists?("#{node[:nginx][:dir]}/sites-enabled/#{application}")
     end
-    notifies :restart, resources(:service => 'nginx')
+    notifies :restart, "service[nginx]"
+  end
+
+  file "#{node[:nginx][:dir]}/sites-available/#{application}" do
+    action :delete
+    only_if do
+      ::File.exists?("#{node[:nginx][:dir]}/sites-available/#{application}")
+    end
   end
 
   directory "#{deploy[:deploy_to]}" do

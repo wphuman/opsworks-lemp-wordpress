@@ -1,15 +1,14 @@
 #
 # Cookbook Name:: deploy
-# Recipe:: php
+# Recipe:: php-fpm
 #
 
 include_recipe 'deploy'
-
-Chef::Log.debug("Running deploy/recipes/php.rb")
+include_recipe "nginx::service"
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'php'
-    Chef::Log.debug("Skipping deploy::php application #{application} as it is not an PHP app")
+    Chef::Log.debug("Skipping deploy::php-fpm application #{application} as it is not an PHP app")
     next
   end
 
@@ -20,7 +19,12 @@ node[:deploy].each do |application, deploy|
   end
 
   opsworks_deploy do
-    deploy_data deploy
     app application
+    deploy_data deploy
+  end
+
+  nginx_web_app application do
+    application deploy
+    cookbook "nginx"
   end
 end
