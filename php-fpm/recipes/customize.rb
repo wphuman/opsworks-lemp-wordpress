@@ -1,20 +1,3 @@
-packages = [
-  'php5-gd',
-  'libssh2-php',
-  'php5-memcached',
-  'php5-mysql',
-  'php5-curl',
-  'php5-common',
-  'php5-xmlrpc'
-]
-
-# install all the packages
-packages.each do |up_package|
-  package up_package do
-    action :upgrade
-  end
-end
-
 # some network optimizations
 bash "tcp_keepalive_time" do
   user "root"
