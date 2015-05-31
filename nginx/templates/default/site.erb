@@ -36,8 +36,8 @@ server {
     fastcgi_temp_file_write_size 256k;
   }
 
-  include <%= node[:nginx][:dir] %>/common.conf;
-  include <%= node[:nginx][:dir] %>/https.conf;
-  include <%= node[:nginx][:dir] %>/secure.conf;
-  include <%= node[:nginx][:dir] %>/yoast-wordpress-seo.conf;
+  include <%= node[:nginx][:dir] %>/sites-available/common.conf;
+  include <%= node[:nginx][:dir] %>/sites-available/https.conf;
+  include <%= node[:nginx][:dir] %>/sites-available/secure.conf;
+  include <%= node[:nginx][:dir] %>/sites-available/yoast-wordpress-seo.conf;
 }
