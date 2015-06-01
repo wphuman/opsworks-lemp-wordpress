@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: deploy
-# Recipe:: php-fpm-undeploy
+# Recipe:: nginx-undeploy
 #
 
 include_recipe 'deploy'
@@ -8,7 +8,7 @@ include_recipe 'nginx::service'
 
 node[:deploy].each do |application, deploy|
   if deploy[:application_type] != 'php'
-    Chef::Log.debug("Skipping deploy::php-fpm-undeploy application #{application} as it is not an PHP app")
+    Chef::Log.debug("Skipping deploy::nginx-undeploy application #{application} as it is not an PHP app")
     next
   end
 
